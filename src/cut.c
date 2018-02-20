@@ -9,13 +9,38 @@
 /**
 **	\brief	Découpe d'un chemin d'accès
 **
-**	
+**	Prend en entrée une partie de ligne de commande et sépare le chemin
+**	d'accès du nom de l'élément à compléter.
+**
+**	\param	command	- partie de la commande à compléter
+**	\param	path	- pointeur sur chaîne où allouer le chemin d'accès
+**	\param	word	- pointeur sur chaîne où allouer le mot à compléter
+**
+**	\return **0** en cas de succès ou une valeur **non nulle** en cas d'erreur
 */
 
-int			cut_word_path(const char *command, char **word, char **path)
+int			cut_word_path(const char *command, char **path, char **word)
 {
+	int		i;
+	char	*c;
+
 	if (command && word && path)
 	{
+		i = 0;
+		if ((c = ft_strrchr(command, '/')))
+		{
+			if (!(*path = ft_strsub(command, 0, c - command + 1)))
+				return (ft_putendl_fd("completion: allocation error.", 2));
+			if (!(*word = ft_strsub(c + 1, 0, ft_strlen(c + 1))))
+				return (ft_putendl_fd("completion: allocation error.", 2));
+		}
+		else
+		{
+			*path = NULL;
+			if (!(*word = ft_strsub(command, 0, ft_strlen(command))))
+				return (ft_putendl_fd("completion: allocation error.", 2));
+		}
+		return (0);
 	}
 	return (1);
 }
