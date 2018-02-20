@@ -50,7 +50,8 @@ static void	complete(const char *word, const char *path, t_list **list)
 	{
 		len = ft_strlen(word);
 		while ((dir = readdir(pdir)))
-			if (ag_strnequ(word, dir->d_name, len))
+			if ((word[0] && ag_strnequ(word, dir->d_name, len)) ||
+				(!word[0] && dir->d_name[0] != '.'))
 			{
 				if (!(node = ft_lstnew(dir->d_name, ft_strlen(dir->d_name) + 1)))
 					ft_putendl_fd("completion: allocation error.", 2);
