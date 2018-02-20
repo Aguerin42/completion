@@ -5,7 +5,7 @@ PROJECT = completion
 # Options de compilation
 CC = @gcc
 CFLAGS = -Wall -Werror -Wextra
-CPPFLAGS = -I includes/ -I $(LIBFT_INC) -I $(LIBAG_INC) -I $(ENV_INC)
+CPPFLAGS = -I includes/ -I $(LIBFT_INC) -I $(LIBAG_INC)
 
 # Headers
 INC_FILE = completion.h
@@ -21,7 +21,7 @@ OBJ = $(SRC:.c=.o)
 # Règles
 all: $(NAME)
 
-$(NAME) : Makefile $(LIBFT_INC) $(LIBAG_INC) $(ENV_INC) $(OBJ)
+$(NAME) : Makefile $(LIBFT_INC) $(LIBAG_INC) $(OBJ)
 	@echo "$(MAGEN)Création de la bibliothèque $(NAME)"
 	@ar rc $(NAME) $(OBJ)
 	@echo "Création de l'index pour $(NAME)$(RESET)"

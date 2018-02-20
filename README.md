@@ -1,13 +1,13 @@
 completion - Complétion de commandes pour Shell
 ------------------------------------
 
-La fonction _completion_ permet de compléter une ligne de commande en cours d'édition. Elle cherche dans les chemins d'accès fournis les éléments pouvant compléter le début de la commande donnée et retourne un tableau de chaînes de caractères les contenant.
+_completion_ fournit des fonctions de complétion d'une ligne de commande et de découpe d'un chemin d'accès.
 
 ## Utilisation et compilation
 
-*completion* utilise des fonctions de la [libft][], de la [libag][] et de [environment][] et a besoin de leurs headers pour pouvoir être compilé. Il faut fournir au _Makefile_ le chemin vers le dossier les contenant à l'aide des variables *LIBFT_INC*, *LIBAG_INC* et *ENV_INC*.
+*completion* utilise des fonctions de la [libft][] et de la [libag][] et a besoin de leurs headers pour pouvoir être compilé. Il faut fournir au _Makefile_ le chemin vers le dossier les contenant à l'aide des variables *LIBFT_INC* et *LIBAG_INC*.
 
-	$> make LIBFT_INC=../libft/includes LIBAG_INC=../libag/includes ENV_INC=../environment/includes all
+	$> make LIBFT_INC=../libft/includes LIBAG_INC=../libag/includes all
 
 La documentation peut être créée avec la commande suivante :
 
@@ -26,5 +26,4 @@ La documentation est générée grâce à [Doxygen][]. Le _Makefile_ utilise l'a
 
 [libft]: https://github.com/aguerin42/libft.git
 [libag]: https://github.com/aguerin42/libag.git
-[environment]: https://github.com/aguerin42/environment.git
 [Doxygen]: https://github.com/doxygen/doxygen
