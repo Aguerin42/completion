@@ -6,6 +6,64 @@
 
 #include "completion.h"
 
+static void	del(void *content, size_t content_size)
+{
+	if (content)
+		ft_memdel(&content);
+	if (content_size)
+		NULL;
+}
+
+static char	**list_to_tab(t_list *list)
+{
+	int		len;
+	int		i;
+	char	**tab;
+
+	len = ft_lstcount(list);
+	if ((tab = (char**)ft_memalloc(sizeof(char*) * (len + 1))))
+	{
+		i = -1;
+		while (++i < len && tab)
+		{
+			if (!(tab[i] = ft_strdup((char*)list->content)))
+			{
+				ag_strdeldouble(&tab);
+				ft_putendl_fd("completion: allocation error.", 2);
+			}
+			list = list->next;
+		}
+	}
+	else
+		ft_putendl_fd("completion: allocation error.", 2);
+	return (tab);
+}
+
+static void	complete(const char *word, const char *path, t_list **list)
+{
+	int				len;
+	DIR				*pdir;
+	struct dirent	*dir;
+	t_list			*node;
+
+	if (!access(path, R_OK) && (pdir = opendir(path)))
+	{
+		len = ft_strlen(word);
+		while ((dir = readdir(pdir)))
+			if (ag_strnequ(word, dir->d_name, len))
+			{
+				if (!(node = ft_lstnew(dir->d_name, ft_strlen(dir->d_name) + 1)))
+					ft_putendl_fd("completion: allocation error.", 2);
+				if (!*list)
+					*list = node;
+				else
+					if (!(*list = ft_lstaddalpha(list, node)))
+						ft_putendl_fd("completion: allocation error.", 2);
+			}
+		closedir(pdir);
+	}
+}
+
 /**
 **	\brief	Complétion d'une ligne de commande
 **
@@ -24,13 +82,24 @@
 **			ou **NULL** en cas d'erreur.
 */
 
-char	**completion(const char *word, const char **path)
+char		**completion(const char *word, const char **path)
 {
-	char **res;
+	int		i;
+	char 	**res;
+	t_list	*list;
 
 	res = NULL;
-	if (word && path)
+	if (word && path && path[0])
 	{
+		i = -1;
+		list = NULL;
+		while (path[++i])
+			complete(word, path[i], &list);
+		list ? res = list_to_tab(list) : NULL;
+		i = -1;
+		while (res && res[++i])
+			ft_putendl(res[i]);
+		list ? ft_lstdel(&list, del) : NULL;
 	}
 	return (res);
 }

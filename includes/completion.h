@@ -4,6 +4,7 @@
 # include "libft.h"
 # include "libag.h"
 # include "environment.h"
+# include <dirent.h>
 
 char	**completion(const char *word, const char **path);
 
