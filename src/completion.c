@@ -53,13 +53,13 @@ static void	complete(const char *word, const char *path, t_list **list)
 			if ((word[0] && ag_strnequ(word, dir->d_name, len)) ||
 				(!word[0] && dir->d_name[0] != '.'))
 			{
-				if (!(node = ft_lstnew(dir->d_name, ft_strlen(dir->d_name) + 1)))
+				if (!(node = ft_lstnew(dir->d_name,
+								ft_strlen(dir->d_name) + 1)))
 					ft_putendl_fd("completion: allocation error.", 2);
 				if (!*list)
 					*list = node;
-				else
-					if (!(*list = ft_lstaddalpha(list, node)))
-						ft_putendl_fd("completion: allocation error.", 2);
+				else if (!(*list = ft_lstaddalpha(list, node)))
+					ft_putendl_fd("completion: allocation error.", 2);
 			}
 		closedir(pdir);
 	}
@@ -86,7 +86,7 @@ static void	complete(const char *word, const char *path, t_list **list)
 char		**completion(const char *word, const char **path)
 {
 	int		i;
-	char 	**res;
+	char	**res;
 	t_list	*list;
 
 	res = NULL;

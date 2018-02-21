@@ -7,6 +7,37 @@
 #include "completion.h"
 
 /**
+**	\brief	Suppression des backslash
+**
+**	La fonction supprime les backslash précédents les espaces.
+**
+**	\param	command	- partie de la ligne de commande
+**
+**	\return	**ligne** dont les backslash ont été supprimés
+**			ou **NULL** en cas d'erreur
+*/
+
+char		*delete_backslash(char *command)
+{
+	int		i;
+	int		len;
+
+	if (command)
+	{
+		len = ft_strlen(command);
+		i = -1;
+		while (command[++i])
+			if (command[i] == '\\')
+			{
+				ft_memmove(&command[i], &command[i + 1],
+							ft_strlen(&command[i + 1]));
+				command[--len] = '\0';
+			}
+	}
+	return (command);
+}
+
+/**
 **	\brief	Découpe d'un chemin d'accès
 **
 **	Prend en entrée une partie de ligne de commande et sépare le chemin

@@ -7,6 +7,7 @@
 
 char	**completion(const char *word, const char **path);
 
+char	*delete_backslash(char *command);
 int		cut_word_path(const char *command, char **path, char **word);
 char	*cut_command(const char *command, int pos);
 
