@@ -97,9 +97,6 @@ char		**completion(const char *word, const char **path)
 		while (path[++i])
 			complete(word, path[i], &list);
 		list ? res = list_to_tab(list) : NULL;
-		i = -1;
-		while (res && res[++i])
-			ft_putendl(res[i]);
 		list ? ft_lstdel(&list, del) : NULL;
 	}
 	return (res);
