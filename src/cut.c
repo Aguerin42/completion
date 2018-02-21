@@ -50,7 +50,7 @@ char		*delete_backslash(char *command)
 **	\return **0** en cas de succès ou une valeur **non nulle** en cas d'erreur
 */
 
-int			cut_word_path(const char *command, char **path, char **word)
+int			cut_path_word(const char *command, char **path, char **word)
 {
 	int		i;
 	char	*c;
