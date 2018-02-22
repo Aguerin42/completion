@@ -6,6 +6,36 @@
 
 #include "completion.h"
 
+char		*insert_backslash(char *command)
+{
+	int		i;
+	int		b;
+	int		len;
+
+	if (command)
+	{
+		i = -1;
+		b = 0;
+		while (command[++i])
+			if (command[i] == ' ')
+				b++;
+		len = ft_strlen(command);
+		if (b && (command = ag_memrealloc(command, len, len + b + 1)))
+		{
+			i = -1;
+			while (command[++i])
+				if (command[i] == ' ')
+				{
+					ft_memmove(&command[i + 1], &command[i], len + b - i);
+					command[i++] = '\\';
+				}
+		}
+		else if (b && !command)
+			ft_putendl_fd("completion: allocation error.", 2);
+	}
+	return (command);
+}
+
 static void	del(void *content, size_t content_size)
 {
 	if (content)
@@ -39,6 +69,29 @@ static char	**list_to_tab(t_list *list)
 	return (tab);
 }
 
+static t_list	*new_node(const char *path, char *name)
+{
+	int		dir;
+	char	*complete;
+	t_list	*node;
+
+	node = NULL;
+	if ((complete = ft_strnew(ft_strlen(path) + ft_strlen(name))))
+	{
+		complete = ft_strcpy(complete, path);
+		complete = ft_strcat(complete, name);
+		dir = isdir(complete);
+		if (!(node = ft_lstnew(name, ft_strlen(name) + 1 + dir)))
+			ft_putendl_fd("completion: allocation error.", 2);
+		if (dir)
+			node->content = ft_strcat(node->content, "/");
+		ft_strdel(&complete);
+	}
+	else
+		ft_putendl_fd("completion: allocation error.", 2);
+	return (node);
+}
+
 static void	complete(const char *word, const char *path, t_list **list)
 {
 	int				len;
@@ -53,10 +106,8 @@ static void	complete(const char *word, const char *path, t_list **list)
 			if ((word[0] && ag_strnequ(word, dir->d_name, len)) ||
 				(!word[0] && dir->d_name[0] != '.'))
 			{
-				if (!(node = ft_lstnew(dir->d_name,
-								ft_strlen(dir->d_name) + 1)))
-					ft_putendl_fd("completion: allocation error.", 2);
-				if (!*list)
+				node = new_node(path, dir->d_name);
+				if (!(*list))
 					*list = node;
 				else if (!(*list = ft_lstaddalpha(list, node)))
 					ft_putendl_fd("completion: allocation error.", 2);

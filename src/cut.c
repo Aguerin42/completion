@@ -52,12 +52,10 @@ char		*delete_backslash(char *command)
 
 int			cut_path_word(const char *command, char **path, char **word)
 {
-	int		i;
 	char	*c;
 
 	if (command && word && path)
 	{
-		i = 0;
 		if ((c = ft_strrchr(command, '/')))
 		{
 			if (!(*path = ft_strsub(command, 0, c - command + 1)))
@@ -91,17 +89,19 @@ static int	find_begin(const char *command, int pos)
 	return (i);
 }
 
-/*
+/**
+**	\brief	Obtention de l'indice de fin du mot
+**
 **	Renvoie l'indice de fin du mot + 1 si il existe, ou `pos` sinon
 */
 
-static int	find_end(const char *command, int pos)
+int	find_end(const char *command, int pos)
 {
 	int	i;
 
 	i = pos;
-	while (command[i] && (command[i] != ' '
-			|| (i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
+	while (command && command[i] && (command[i] != ' ' ||
+			(i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
 	return (i);
 }
