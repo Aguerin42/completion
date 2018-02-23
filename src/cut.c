@@ -27,7 +27,7 @@ char		*delete_backslash(char *command)
 		len = ft_strlen(command);
 		i = -1;
 		while (command[++i])
-			if (command[i] == '\\')
+			if (command[i] == '\\' && command[i + 1] == ' ')
 			{
 				ft_memmove(&command[i], &command[i + 1],
 							ft_strlen(&command[i + 1]));
@@ -100,7 +100,8 @@ int	find_end(const char *command, int pos)
 	int	i;
 
 	i = pos;
-	while (command && command[i] && (command[i] != ' ' ||
+	while (command && command[i] &&
+			((command[i] == '\\' && !command[i + 1]) || command[i] != ' ' || 
 			(i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
 	return (i);

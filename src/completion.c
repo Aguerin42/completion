@@ -6,6 +6,14 @@
 
 #include "completion.h"
 
+/**
+**	\brief	Insertion de backslash avant les espaces
+**
+**	\param	command	- commande à modifier
+**
+**	\return **chaîne** modifiée ou **NULL** en cas d'erreur
+*/
+
 char		*insert_backslash(char *command)
 {
 	int		i;
@@ -101,7 +109,8 @@ static void	complete(const char *word, const char *path, t_list **list)
 
 	if (!access(path, R_OK) && (pdir = opendir(path)))
 	{
-		len = ft_strlen(word);
+		if ((len = ft_strlen(word)) && word[len - 1] == '\\')
+			len--;
 		while ((dir = readdir(pdir)))
 			if ((word[0] && ag_strnequ(word, dir->d_name, len)) ||
 				(!word[0] && dir->d_name[0] != '.'))
