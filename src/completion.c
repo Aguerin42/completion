@@ -39,7 +39,7 @@ char		*insert_backslash(char *command)
 				}
 		}
 		else if (b && !command)
-			ft_putendl_fd("completion: allocation error.", 2);
+			ft_putendl_fd("\ncompletion: allocation error.", 2);
 	}
 	return (command);
 }
@@ -67,13 +67,13 @@ static char	**list_to_tab(t_list *list)
 			if (!(tab[i] = ft_strdup((char*)list->content)))
 			{
 				ag_strdeldouble(&tab);
-				ft_putendl_fd("completion: allocation error.", 2);
+				ft_putendl_fd("\ncompletion: allocation error.", 2);
 			}
 			list = list->next;
 		}
 	}
 	else
-		ft_putendl_fd("completion: allocation error.", 2);
+		ft_putendl_fd("\ncompletion: allocation error.", 2);
 	return (tab);
 }
 
@@ -90,13 +90,13 @@ static t_list	*new_node(const char *path, char *name)
 		complete = ft_strcat(complete, name);
 		dir = isdir(complete);
 		if (!(node = ft_lstnew(name, ft_strlen(name) + 1 + dir)))
-			ft_putendl_fd("completion: allocation error.", 2);
+			ft_putendl_fd("\ncompletion: allocation error.", 2);
 		if (dir)
 			node->content = ft_strcat(node->content, "/");
 		ft_strdel(&complete);
 	}
 	else
-		ft_putendl_fd("completion: allocation error.", 2);
+		ft_putendl_fd("\ncompletion: allocation error.", 2);
 	return (node);
 }
 
@@ -119,7 +119,7 @@ static void	complete(const char *word, const char *path, t_list **list)
 				if (!(*list))
 					*list = node;
 				else if (!(*list = ft_lstaddalpha(list, node)))
-					ft_putendl_fd("completion: allocation error.", 2);
+					ft_putendl_fd("\ncompletion: allocation error.", 2);
 			}
 		closedir(pdir);
 	}

@@ -59,15 +59,15 @@ int			cut_path_word(const char *command, char **path, char **word)
 		if ((c = ft_strrchr(command, '/')))
 		{
 			if (!(*path = ft_strsub(command, 0, c - command + 1)))
-				return (ft_putendl_fd("completion: allocation error.", 2));
+				return (ft_putendl_fd("\ncompletion: allocation error.", 2));
 			if (!(*word = ft_strsub(c + 1, 0, ft_strlen(c + 1))))
-				return (ft_putendl_fd("completion: allocation error.", 2));
+				return (ft_putendl_fd("\ncompletion: allocation error.", 2));
 		}
 		else
 		{
 			*path = NULL;
 			if (!(*word = ft_strsub(command, 0, ft_strlen(command))))
-				return (ft_putendl_fd("completion: allocation error.", 2));
+				return (ft_putendl_fd("\ncompletion: allocation error.", 2));
 		}
 		return (0);
 	}
@@ -133,7 +133,7 @@ char		*cut_command(const char *command, int pos)
 		e = find_end(command, pos);
 		if (e - b > 0 || pos > 0)
 			if (!(res = ft_strsub(command, b, e - b)))
-				ft_putendl_fd("completion: allocation error.", 2);
+				ft_putendl_fd("\ncompletion: allocation error.", 2);
 	}
 	return (res);
 }
