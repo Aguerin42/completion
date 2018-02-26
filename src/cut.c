@@ -131,7 +131,7 @@ char		*cut_command(const char *command, int pos)
 	{
 		b = find_begin(command, pos);
 		e = find_end(command, pos);
-		if (e - b > 0)
+		if (e - b > 0 || pos > 0)
 			if (!(res = ft_strsub(command, b, e - b)))
 				ft_putendl_fd("completion: allocation error.", 2);
 	}
