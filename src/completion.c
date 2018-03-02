@@ -125,6 +125,32 @@ static void	complete(const char *word, const char *path, t_list **list)
 	}
 }
 
+static void	complete_env(const char *word, const char *env, t_list **list)
+{
+	int		len;
+	char	*egal;
+	t_list	*node;
+
+	if ((egal = ft_strchr(env, '=')))
+	{
+		if (((len = ft_strlen(word)) <= (egal - env)) &&
+			ft_strnequ(word, env, len))
+		{
+			if ((node = ft_lstnew(NULL, 0)))
+			{
+				node->content = ft_strsub(env, 0, egal - env);
+				node->content_size = ft_strlen(node->content) + 1;
+				if (!(*list))
+					*list = node;
+				else if (!(*list = ft_lstaddalpha(list, node)))
+					ft_putendl_fd("\ncompletion: allocation error.", 2);
+			}
+			else
+				ft_putendl_fd("\ncompletion: allocation error.", 2);
+		}
+	}
+}
+
 /**
 **	\brief	Complétion d'une ligne de commande
 **
@@ -143,7 +169,7 @@ static void	complete(const char *word, const char *path, t_list **list)
 **			ou **NULL** en cas d'erreur.
 */
 
-char		**completion(const char *word, const char **path)
+char		**completion(const char *word, const char **path, const char **env, const char **loc)
 {
 	int		i;
 	char	**res;
@@ -156,6 +182,12 @@ char		**completion(const char *word, const char **path)
 		list = NULL;
 		while (path[++i])
 			complete(word, path[i], &list);
+		i = -1;
+		while (env && env[++i])
+			complete_env(word, env[i], &list);
+		i = -1;
+		while (loc && loc[++i])
+			complete_env(word, loc[i], &list);
 		list ? res = list_to_tab(list) : NULL;
 		list ? ft_lstdel(&list, del) : NULL;
 	}
