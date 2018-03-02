@@ -37,9 +37,18 @@ char		*delete_backslash(char *command)
 	return (command);
 }
 
-static int	isoperator(char c)
+/**
+**	\brief	Teste si le caractère peut être un opérateur shell
+**
+**	\param	c	- caractère à comparer
+**
+**	\return	**1** si le caractère peut être une opérateur shell
+**			ou **0** sinon.
+*/
+
+int			is_shellop(char c)
 {
-	if (c == '|' || c == '&' || c == ';')
+	if (c == '|' || c == '&' || c == ';' || c == '>' || c == '<')
 		return (1);
 	return (0);
 }
@@ -85,12 +94,12 @@ int			cut_path_word(const char *command, char **path, char **word)
 **	Renvoie l'indice du début du mot
 */
 
-static int	find_begin(const char *command, int pos)
+int	find_begin(const char *command, int pos)
 {
 	int	i;
 
 	i = pos;
-	while ((i > 0 && command[i - 1] != ' ' && !isoperator(command[i - 1]))
+	while ((i > 0 && command[i - 1] != ' ' && !is_shellop(command[i - 1]))
 			|| (i > 1 && command[i - 1] == ' ' && command[i - 2] == '\\'))
 		i--;
 	return (i);
@@ -107,7 +116,7 @@ int	find_end(const char *command, int pos)
 	int	i;
 
 	i = pos;
-	while (command && command[i] && !isoperator(command[i]) &&
+	while (command && command[i] && !is_shellop(command[i]) &&
 			((command[i] == '\\' && !command[i + 1]) || command[i] != ' ' ||
 			(i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
