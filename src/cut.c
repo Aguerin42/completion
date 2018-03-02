@@ -90,8 +90,10 @@ int			cut_path_word(const char *command, char **path, char **word)
 	return (1);
 }
 
-/*
-**	Renvoie l'indice du début du mot
+/**
+**	\brief	Obtention de l'indice de début du mot
+**
+**	Renvoie l'indice de début du mot si il existe, ou `pos` sinon
 */
 
 int	find_begin(const char *command, int pos)

@@ -162,6 +162,8 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 **	\param	word	- mot à compléter
 **	\param	path	- chemin(s) d'accès vers le ou les dossiers où chercher
 **					des éléments pour la complétion
+**	\param	env		- variables d'environnement (peut être `NULL`)
+**	\param	loc		- variables locales (peut être `NULL`)
 **
 **	\return	**tableaux de chaînes de caractères** contenant le nom des
 **			éléments pouvant compléter le mot (le tableau est vide si aucun
@@ -169,7 +171,8 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 **			ou **NULL** en cas d'erreur.
 */
 
-char		**completion(const char *word, const char **path, const char **env, const char **loc)
+char		**completion(const char *word, const char **path,
+							const char **env, const char **loc)
 {
 	int		i;
 	char	**res;
