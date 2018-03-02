@@ -112,7 +112,7 @@ int	find_end(const char *command, int pos)
 **
 **	Découpe la partie de la commande sur laquelle la complétion doit
 **	être effectuée. La fonction se base sur la position du curseur dans la
-**	ligne pour savoir quel partie découper.
+**	ligne pour savoir quelle partie découper.
 **
 **	\param	command	- ligne de commande
 **	\param	pos		- position du curseur dans la ligne.
