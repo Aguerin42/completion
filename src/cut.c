@@ -37,6 +37,13 @@ char		*delete_backslash(char *command)
 	return (command);
 }
 
+static int	isoperator(char c)
+{
+	if (c == '|' || c == '&' || c == ';')
+		return (1);
+	return (0);
+}
+
 /**
 **	\brief	Découpe d'un chemin d'accès
 **
@@ -83,7 +90,7 @@ static int	find_begin(const char *command, int pos)
 	int	i;
 
 	i = pos;
-	while ((i > 0 && command[i - 1] != ' ')
+	while ((i > 0 && command[i - 1] != ' ' && !isoperator(command[i - 1]))
 			|| (i > 1 && command[i - 1] == ' ' && command[i - 2] == '\\'))
 		i--;
 	return (i);
@@ -100,8 +107,8 @@ int	find_end(const char *command, int pos)
 	int	i;
 
 	i = pos;
-	while (command && command[i] &&
-			((command[i] == '\\' && !command[i + 1]) || command[i] != ' ' || 
+	while (command && command[i] && !isoperator(command[i]) &&
+			((command[i] == '\\' && !command[i + 1]) || command[i] != ' ' ||
 			(i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
 	return (i);
