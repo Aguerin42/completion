@@ -120,7 +120,7 @@ int	find_end(const char *command, int pos)
 	i = pos;
 	while (command && command[i] && !is_shellop(command[i]) &&
 			((command[i] == '\\' && !command[i + 1])
-			|| (command[i] != ' ' && command[i] != '$')
+			|| (command[i] != ' ' && command[i + 1] != '$')
 			|| (i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
 	return (i);
