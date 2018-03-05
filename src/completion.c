@@ -179,11 +179,11 @@ char		**completion(const char *word, const char **path,
 	t_list	*list;
 
 	res = NULL;
-	if (word && path && path[0])
+	if (word)
 	{
 		i = -1;
 		list = NULL;
-		while (path[++i])
+		while (path && path[++i])
 			complete(word, path[i], &list);
 		i = -1;
 		while (env && env[++i])
