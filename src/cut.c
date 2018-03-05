@@ -101,7 +101,7 @@ int	find_begin(const char *command, int pos)
 	int	i;
 
 	i = pos;
-	while ((i > 0 && command[i - 1] != ' ' && !is_shellop(command[i - 1]))
+	while ((i > 0 && command[i - 1] != ' ' && !is_shellop(command[i - 1]) && command[i] != '$')
 			|| (i > 1 && command[i - 1] == ' ' && command[i - 2] == '\\'))
 		i--;
 	return (i);
@@ -119,8 +119,9 @@ int	find_end(const char *command, int pos)
 
 	i = pos;
 	while (command && command[i] && !is_shellop(command[i]) &&
-			((command[i] == '\\' && !command[i + 1]) || command[i] != ' ' ||
-			(i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
+			((command[i] == '\\' && !command[i + 1])
+			|| (command[i] != ' ' && command[i] != '$')
+			|| (i > 0 && command[i] == ' ' && command[i - 1] == '\\')))
 		i++;
 	return (i);
 }
