@@ -7,7 +7,7 @@
 
 char	*insert_backslash(char *command);
 char	**completion(const char *word, const char **path,
-						const char **env, const char **loc);
+						const char **builtin, const char **var);
 
 int		is_shellop(char c);
 char	*delete_backslash(char *command);

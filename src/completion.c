@@ -131,23 +131,23 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 	char	*egal;
 	t_list	*node;
 
-	if ((egal = ft_strchr(env, '=')))
+	egal = ft_strchr(env, '=');
+	len = ft_strlen(word);
+	if (((!egal || len <= (egal - env))) && ft_strnequ(word, env, len))
 	{
-		if (((len = ft_strlen(word)) <= (egal - env)) &&
-			ft_strnequ(word, env, len))
+		if ((node = ft_lstnew(NULL, 0)))
 		{
-			if ((node = ft_lstnew(NULL, 0)))
-			{
-				node->content = ft_strsub(env, 0, egal - env);
-				node->content_size = ft_strlen(node->content) + 1;
-				if (!(*list))
-					*list = node;
-				else if (!(*list = ft_lstaddalpha(list, node)))
-					ft_putendl_fd("\ncompletion: allocation error.", 2);
-			}
-			else
+			node->content =
+			ft_strsub(env, 0, egal ? egal - env : (int)ft_strlen(env));
+			node->content_size = ft_strlen(node->content) + 1;
+			if (!(*list))
+				*list = node;
+			else if (!(*list = ft_lstaddalpha(list, node)))
 				ft_putendl_fd("\ncompletion: allocation error.", 2);
 		}
+		else
+			ft_putendl_fd(
+			"\ncompletion: allocation error in complete_env() function.", 2);
 	}
 }
 
@@ -162,8 +162,8 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 **	\param	word	- mot à compléter
 **	\param	path	- chemin(s) d'accès vers le ou les dossiers où chercher
 **					des éléments pour la complétion
-**	\param	env		- variables d'environnement (peut être `NULL`)
-**	\param	loc		- variables locales (peut être `NULL`)
+**	\param	builtin	- builtins du Shell (peut être `NULL`)
+**	\param	var		- variables locales et d'environnement (peut être `NULL`)
 **
 **	\return	**tableaux de chaînes de caractères** contenant le nom des
 **			éléments pouvant compléter le mot (le tableau est vide si aucun
@@ -172,7 +172,7 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 */
 
 char		**completion(const char *word, const char **path,
-							const char **env, const char **loc)
+							const char **builtin, const char **var)
 {
 	int		i;
 	char	**res;
@@ -181,16 +181,16 @@ char		**completion(const char *word, const char **path,
 	res = NULL;
 	if (word)
 	{
-		i = -1;
 		list = NULL;
+		i = -1;
 		while (path && path[++i])
 			complete(word, path[i], &list);
 		i = -1;
-		while (env && env[++i])
-			complete_env(word, env[i], &list);
+		while (builtin && builtin[++i])
+			complete_env(word, builtin[i], &list);
 		i = -1;
-		while (loc && loc[++i])
-			complete_env(word, loc[i], &list);
+		while (var && var[++i])
+			complete_env(word, var[i], &list);
 		list ? res = list_to_tab(list) : NULL;
 		list ? ft_lstdel(&list, del) : NULL;
 	}
