@@ -5,9 +5,9 @@ _completion_ fournit des fonctions de complétion d'une ligne de commande et de 
 
 ## Utilisation et compilation
 
-*completion* utilise des fonctions de la [libft][] et de la [libag][] et a besoin de leurs headers pour pouvoir être compilé. Il faut fournir au _Makefile_ le chemin vers le dossier les contenant à l'aide des variables *LIBFT_INC* et *LIBAG_INC*.
+*completion* utilise des fonctions de la [libft][], de la [libag][] et de la [liberror][] et a besoin de leurs headers pour pouvoir être compilé. Il faut fournir au _Makefile_ le chemin vers le dossier les contenant à l'aide des variables *LIBFT_INC*, *LIBAG_INC* et *ERROR_INC*.
 
-	$> make LIBFT_INC=../libft/includes LIBAG_INC=../libag/includes all
+	$> make LIBFT_INC=../libft/includes LIBAG_INC=../libag/includes ERROR_INC=../error/includes all
 
 La documentation peut être créée avec la commande suivante :
 
@@ -26,4 +26,5 @@ La documentation est générée grâce à [Doxygen][]. Le _Makefile_ utilise l'a
 
 [libft]: https://github.com/aguerin42/libft.git
 [libag]: https://github.com/aguerin42/libag.git
+[liberror]: https://github.com/mtacnet/error
 [Doxygen]: https://github.com/doxygen/doxygen

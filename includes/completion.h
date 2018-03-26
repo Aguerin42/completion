@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "libag.h"
+# include "liberror.h"
 # include <dirent.h>
 
 char	*insert_backslash(char *command);

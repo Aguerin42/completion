@@ -5,7 +5,7 @@ PROJECT = completion
 # Options de compilation
 CC = @gcc
 CFLAGS = -Wall -Werror -Wextra
-CPPFLAGS = -I includes/ -I $(LIBFT_INC) -I $(LIBAG_INC)
+CPPFLAGS = -I includes/ -I $(LIBFT_INC) -I $(LIBAG_INC) -I $(ERROR_INC)
 
 # Headers
 INC_FILE = completion.h
