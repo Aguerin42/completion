@@ -6,7 +6,7 @@
 /*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 14:12:26 by aguerin           #+#    #+#             */
-/*   Updated: 2018/04/02 14:33:24 by aguerin          ###   ########.fr       */
+/*   Updated: 2018/04/02 14:46:53 by aguerin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void		complete_env(const char *word, const char *env, t_list **list)
 				ft_strsub(env, 0, egal ? egal - env : (int)ft_strlen(env))))
 			{
 				ft_putchar_fd('\n', 2);
-				sh_error(1, "completion");
+				sh_error(1, "in function completion");
 			}
 			node->content_size = ft_strlen(node->content) + 1;
 			if (!(*list))
