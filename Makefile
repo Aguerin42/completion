@@ -12,7 +12,7 @@ INC_FILE = completion.h
 INC = $(addprefix includes/, $(INC_FILE))
 
 # Sources
-SRC_FILE = completion.c cut.c
+SRC_FILE = annexe.c completion.c cut.c
 SRC = $(addprefix src/, $(SRC_FILE))
 
 # Objets

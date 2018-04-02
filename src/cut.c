@@ -1,4 +1,16 @@
-/**
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cut.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/02 14:12:51 by aguerin           #+#    #+#             */
+/*   Updated: 2018/04/02 14:31:05 by aguerin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*
 **	\file	cut.c
 **	\author	Alexis Guérin
 **	\date	19 février 2018
@@ -6,7 +18,7 @@
 
 #include "completion.h"
 
-/**
+/*
 **	\brief	Suppression des backslash
 **
 **	La fonction supprime les backslash précédents les espaces.
@@ -17,7 +29,7 @@
 **			ou **NULL** en cas d'erreur
 */
 
-char		*delete_backslash(char *command)
+char	*delete_backslash(char *command)
 {
 	int		i;
 	int		len;
@@ -37,23 +49,7 @@ char		*delete_backslash(char *command)
 	return (command);
 }
 
-/**
-**	\brief	Teste si le caractère peut être un opérateur shell
-**
-**	\param	c	- caractère à comparer
-**
-**	\return	**1** si le caractère peut être une opérateur shell
-**			ou **0** sinon.
-*/
-
-int			is_shellop(char c)
-{
-	if (c == '|' || c == '&' || c == ';' || c == '>' || c == '<')
-		return (1);
-	return (0);
-}
-
-/**
+/*
 **	\brief	Découpe d'un chemin d'accès
 **
 **	Prend en entrée une partie de ligne de commande et sépare le chemin
@@ -66,7 +62,7 @@ int			is_shellop(char c)
 **	\return **0** en cas de succès ou une valeur **non nulle** en cas d'erreur
 */
 
-int			cut_path_word(const char *command, char **path, char **word)
+int		cut_path_word(const char *command, char **path, char **word)
 {
 	char	*c;
 
@@ -90,30 +86,31 @@ int			cut_path_word(const char *command, char **path, char **word)
 	return (1);
 }
 
-/**
+/*
 **	\brief	Obtention de l'indice de début du mot
 **
 **	Renvoie l'indice de début du mot si il existe, ou `pos` sinon
 */
 
-int	find_begin(const char *command, int pos)
+int		find_begin(const char *command, int pos)
 {
 	int	i;
 
 	i = pos;
-	while ((i > 0 && command[i - 1] != ' ' && !is_shellop(command[i - 1]) && command[i] != '$')
-			|| (i > 1 && command[i - 1] == ' ' && command[i - 2] == '\\'))
+	while ((i > 0 && command[i - 1] != ' ' && !is_shellop(command[i - 1])
+			&& command[i] != '$')
+		|| (i > 1 && command[i - 1] == ' ' && command[i - 2] == '\\'))
 		i--;
 	return (i);
 }
 
-/**
+/*
 **	\brief	Obtention de l'indice de fin du mot
 **
 **	Renvoie l'indice de fin du mot + 1 si il existe, ou `pos` sinon
 */
 
-int	find_end(const char *command, int pos)
+int		find_end(const char *command, int pos)
 {
 	int	i;
 
@@ -126,7 +123,7 @@ int	find_end(const char *command, int pos)
 	return (i);
 }
 
-/**
+/*
 **	\brief	Découpe d'une commande
 **
 **	Découpe la partie de la commande sur laquelle la complétion doit
@@ -139,7 +136,7 @@ int	find_end(const char *command, int pos)
 **	\return	**
 */
 
-char		*cut_command(const char *command, int pos)
+char	*cut_command(const char *command, int pos)
 {
 	char	*res;
 	int		b;

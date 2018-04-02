@@ -1,4 +1,16 @@
-/**
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   completion.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/02 14:12:26 by aguerin           #+#    #+#             */
+/*   Updated: 2018/04/02 14:33:24 by aguerin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*
 **	\file	completion.c
 **	\author	Alexis Guérin
 **	\date	19 février 2018
@@ -6,56 +18,7 @@
 
 #include "completion.h"
 
-/**
-**	\brief	Insertion de backslash avant les espaces
-**
-**	\param	command	- commande à modifier
-**
-**	\return **chaîne** modifiée ou **NULL** en cas d'erreur
-*/
-
-char		*insert_backslash(char *command)
-{
-	int		i;
-	int		b;
-	int		len;
-
-	if (command)
-	{
-		i = -1;
-		b = 0;
-		while (command[++i])
-			if (command[i] == ' ')
-				b++;
-		len = ft_strlen(command);
-		if (b && (command = ag_memrealloc(command, len, len + b + 1)))
-		{
-			i = -1;
-			while (command[++i])
-				if (command[i] == ' ')
-				{
-					ft_memmove(&command[i + 1], &command[i], len + b - i);
-					command[i++] = '\\';
-				}
-		}
-		else if (b && !command)
-		{
-			ft_putchar_fd(2, '\n');
-			sh_error(1, "completion");
-		}
-	}
-	return (command);
-}
-
-static void	del(void *content, size_t content_size)
-{
-	if (content)
-		ft_memdel(&content);
-	if (content_size)
-		NULL;
-}
-
-static char	**list_to_tab(t_list *list)
+static char		**list_to_tab(t_list *list)
 {
 	int		len;
 	int		i;
@@ -70,17 +33,13 @@ static char	**list_to_tab(t_list *list)
 			if (!(tab[i] = ft_strdup((char*)list->content)))
 			{
 				ag_strdeldouble(&tab);
-				ft_putchar_fd(2, '\n');
-				sh_error(1, "completion");
+				completion_error();
 			}
 			list = list->next;
 		}
 	}
 	else
-	{
-		ft_putchar_fd(2, '\n');
-		sh_error(1, "completion");
-	}
+		completion_error();
 	return (tab);
 }
 
@@ -97,23 +56,17 @@ static t_list	*new_node(const char *path, char *name)
 		complete = ft_strcat(complete, name);
 		dir = isdir(complete);
 		if (!(node = ft_lstnew(name, ft_strlen(name) + 1 + dir)))
-		{
-			ft_putchar_fd(2, '\n');
-			sh_error(1, "completion");
-		}
+			completion_error();
 		if (dir)
 			node->content = ft_strcat(node->content, "/");
 		ft_strdel(&complete);
 	}
 	else
-	{
-		ft_putchar_fd(2, '\n');
-		sh_error(1, "completion");
-	}
+		completion_error();
 	return (node);
 }
 
-static void	complete(const char *word, const char *path, t_list **list)
+static void		complete(const char *word, const char *path, t_list **list)
 {
 	int				len;
 	DIR				*pdir;
@@ -132,16 +85,13 @@ static void	complete(const char *word, const char *path, t_list **list)
 				if (!(*list))
 					*list = node;
 				else if (!(*list = ft_lstaddalpha(list, node)))
-				{
-					ft_putchar_fd(2, '\n');
-					sh_error(1, "completion");
-				}
+					completion_error();
 			}
 		closedir(pdir);
 	}
 }
 
-static void	complete_env(const char *word, const char *env, t_list **list)
+static void		complete_env(const char *word, const char *env, t_list **list)
 {
 	int		len;
 	char	*egal;
@@ -153,26 +103,24 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 	{
 		if ((node = ft_lstnew(NULL, 0)))
 		{
-			node->content =
-			ft_strsub(env, 0, egal ? egal - env : (int)ft_strlen(env));
+			if (!(node->content =
+				ft_strsub(env, 0, egal ? egal - env : (int)ft_strlen(env))))
+			{
+				ft_putchar_fd('\n', 2);
+				sh_error(1, "completion");
+			}
 			node->content_size = ft_strlen(node->content) + 1;
 			if (!(*list))
 				*list = node;
 			else if (!(*list = ft_lstaddalpha(list, node)))
-			{
-				ft_putchar_fd(2, '\n');
-				sh_error(1, "completion");
-			}
+				completion_error();
 		}
 		else
-		{
-			ft_putchar_fd(2, '\n');
-			sh_error(1, "completion");
-		}
+			completion_error();
 	}
 }
 
-/**
+/*
 **	\brief	Complétion d'une ligne de commande
 **
 **	La fonction reçoit un mot à compléter et les chemins d'accès où chercher
@@ -187,12 +135,11 @@ static void	complete_env(const char *word, const char *env, t_list **list)
 **	\param	var		- variables locales et d'environnement (peut être `NULL`)
 **
 **	\return	**tableaux de chaînes de caractères** contenant le nom des
-**			éléments pouvant compléter le mot (le tableau est vide si aucun
-**			élément n'a été trouvé),
-**			ou **NULL** en cas d'erreur.
+**			éléments pouvant compléter le mot
+**			ou **NULL** si aucun élément n'a été trouvé) ou en cas d'erreur.
 */
 
-char		**completion(const char *word, const char **path,
+char			**completion(const char *word, const char **path,
 							const char **builtin, const char **var)
 {
 	int		i;
@@ -213,7 +160,7 @@ char		**completion(const char *word, const char **path,
 		while (var && var[++i])
 			complete_env(word, var[i], &list);
 		list ? res = list_to_tab(list) : NULL;
-		list ? ft_lstdel(&list, del) : NULL;
+		list ? ft_lstdel(&list, completion_del) : NULL;
 	}
 	return (res);
 }
