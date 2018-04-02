@@ -6,7 +6,7 @@
 /*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 14:16:27 by aguerin           #+#    #+#             */
-/*   Updated: 2018/04/02 14:39:05 by aguerin          ###   ########.fr       */
+/*   Updated: 2018/04/02 14:53:21 by aguerin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*insert_backslash(char *command);
 int		is_shellop(char c);
 void	completion_error(void);
 void	completion_del(void *content, size_t content_size);
-
 
 /*
 **	completion.c
