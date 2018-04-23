@@ -1,22 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   completion.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/02 14:12:26 by aguerin           #+#    #+#             */
-/*   Updated: 2018/04/02 14:46:53 by aguerin          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "completion.h"
 
 /*
-**	\file	completion.c
-**	\author	Alexis Guérin
-**	\date	19 février 2018
+**	Transformation de la liste en tableau à deux dimensions
 */
-
-#include "completion.h"
 
 static char		**list_to_tab(t_list *list)
 {
@@ -43,6 +29,10 @@ static char		**list_to_tab(t_list *list)
 	return (tab);
 }
 
+/*
+**	Création d'un nouveau maillon
+*/
+
 static t_list	*new_node(const char *path, char *name)
 {
 	int		dir;
@@ -65,6 +55,13 @@ static t_list	*new_node(const char *path, char *name)
 		completion_error();
 	return (node);
 }
+
+/*
+**	Complétion d'un nom de fichier/dossier
+**
+**	La fonction cherche les éléments dont le nom commence par le contenu
+**	de `word` dans le dossier indiqué par la variable `path`.
+*/
 
 static void		complete(const char *word, const char *path, t_list **list)
 {
@@ -90,6 +87,13 @@ static void		complete(const char *word, const char *path, t_list **list)
 		closedir(pdir);
 	}
 }
+
+/*
+**	Complétion d'un nom de variable locale/d'environnement
+**
+**	La fonction cherche les varoables dont le nom commence par le contenu
+**	de `word` dans le tableau de variables `env`
+*/
 
 static void		complete_env(const char *word, const char *env, t_list **list)
 {
