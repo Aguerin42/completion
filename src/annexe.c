@@ -59,7 +59,7 @@ int		is_shellop(char c)
 void	completion_error(void)
 {
 	ft_putendl_fd("", 2);
-	sh_error(1, "in function completion");
+	sh_error_exit(1, "in function completion");
 }
 
 /*
